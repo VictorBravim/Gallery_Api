@@ -5,14 +5,12 @@ const lightbox = document.querySelector(".lightbox");
 const downloadImgBtn = lightbox.querySelector(".uil-import");
 const closeImgBtn = lightbox.querySelector(".close-icon");
 
-// API key, paginations, searchTerm variables
 const apiKey = "4tWK41FWXGukblc1ONJMEbHHwKKtRioxPM5J1j7hBIKIDeDyjADxJAOB";
 const perPage = 15;
 let currentPage = 1;
 let searchTerm = null;
 
 const downloadImg = (imgUrl) => {
-    // Converting received img to blob, creating its download link, & downloading it
     fetch(imgUrl).then(res => res.blob()).then(blob => {
         const a = document.createElement("a");
         a.href = URL.createObjectURL(blob);
@@ -22,7 +20,6 @@ const downloadImg = (imgUrl) => {
 }
 
 const showLightbox = (name, img) => {
-    // Showing lightbox and setting img source, name and button attribute
     lightbox.querySelector("img").src = img;
     lightbox.querySelector("span").innerText = name;
     downloadImgBtn.setAttribute("data-img", img);
@@ -31,13 +28,11 @@ const showLightbox = (name, img) => {
 }
 
 const hideLightbox = () => {
-    // Hiding lightbox on close icon click
     lightbox.classList.remove("show");
     document.body.style.overflow = "auto";
 }
 
 const generateHTML = (images) => {
-    // Making li of all fetched images and adding them to the existing image wrapper
     imageWrapper.innerHTML += images.map(img =>
         `<li class="card">
             <img onclick="showLightbox('${img.photographer}', '${img.src.large2x}')" src="${img.src.large2x}" alt="img">
@@ -55,7 +50,6 @@ const generateHTML = (images) => {
 }
 
 const getImages = (apiURL) => {
-    // Fetching images by API call with authorization header
     searchInput.blur();
     loadMoreBtn.innerText = "Loading...";
     loadMoreBtn.classList.add("disabled");
@@ -69,17 +63,14 @@ const getImages = (apiURL) => {
 }
 
 const loadMoreImages = () => {
-    currentPage++; // Increment currentPage by 1
-    // If searchTerm has some value then call API with search term else call default API
+    currentPage++; 
     let apiUrl = `https://api.pexels.com/v1/curated?page=${currentPage}&per_page=${perPage}`;
     apiUrl = searchTerm ? `https://api.pexels.com/v1/search?query=${searchTerm}&page=${currentPage}&per_page=${perPage}` : apiUrl;
     getImages(apiUrl);
 }
 
 const loadSearchImages = (e) => {
-    // If the search input is empty, set the search term to null and return from here
     if (e.target.value === "") return searchTerm = null;
-    // If pressed key is Enter, update the current page, search term & call the getImages
     if (e.key === "Enter") {
         currentPage = 1;
         searchTerm = e.target.value;
