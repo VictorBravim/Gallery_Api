@@ -33,21 +33,37 @@ const hideLightbox = () => {
 }
 
 const generateHTML = (images) => {
-    imageWrapper.innerHTML += images.map(img =>
-        `<li class="card">
-            <img onclick="showLightbox('${img.photographer}', '${img.src.large2x}')" src="${img.src.large2x}" alt="img">
+    imageWrapper.innerHTML += images.map(img => `
+        <li class="card">
+            <img src="${img.src.large2x}" alt="img" loading="lazy">
             <div class="details">
                 <div class="photographer">
                     <i class="uil uil-camera"></i>
                     <span>${img.photographer}</span>
                 </div>
-                <button onclick="downloadImg('${img.src.large2x}');">
+                <button class="download-btn">
                     <i class="uil uil-import"></i>
                 </button>
             </div>
-        </li>`
-    ).join("");
+        </li>
+    `).join("");
 }
+
+document.addEventListener("click", (e) => {
+    if (e.target.tagName === "IMG" && e.target.closest(".card")) {
+        const photographerName = e.target.nextElementSibling.querySelector("span").innerText;
+        const imgUrl = e.target.src;
+        showLightbox(photographerName, imgUrl);
+    }
+});
+
+document.addEventListener("click", (e) => {
+    if (e.target.classList.contains("download-btn")) {
+        const imgUrl = e.target.closest(".card").querySelector("img").src;
+        downloadImg(imgUrl);
+    }
+});
+
 
 const getImages = (apiURL) => {
     searchInput.blur();
@@ -63,7 +79,7 @@ const getImages = (apiURL) => {
 }
 
 const loadMoreImages = () => {
-    currentPage++; 
+    currentPage++;
     let apiUrl = `https://api.pexels.com/v1/curated?page=${currentPage}&per_page=${perPage}`;
     apiUrl = searchTerm ? `https://api.pexels.com/v1/search?query=${searchTerm}&page=${currentPage}&per_page=${perPage}` : apiUrl;
     getImages(apiUrl);
@@ -84,3 +100,4 @@ loadMoreBtn.addEventListener("click", loadMoreImages);
 searchInput.addEventListener("keyup", loadSearchImages);
 closeImgBtn.addEventListener("click", hideLightbox);
 downloadImgBtn.addEventListener("click", (e) => downloadImg(e.target.dataset.img));
+
