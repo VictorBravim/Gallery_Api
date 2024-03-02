@@ -7,12 +7,12 @@
   font-family: "Poppins", sans-serif;
 }
 
-::-webkit-scrollbar{
+::-webkit-scrollbar {
   width: 0;
 }
 
 .search {
-  height: 40vh;
+  height: 20vh;
   display: flex;
   position: relative;
   align-items: center;
@@ -20,7 +20,6 @@
 }
 
 .search::before,
-.search img,
 .lightbox {
   left: 0;
   top: 0;
@@ -32,11 +31,7 @@
 .search::before {
   content: "";
   z-index: 1;
-  background: rgba(0, 0, 0, 0.25);
-}
-
-.search img {
-  object-fit: cover;
+  background: rgba(255, 255, 255, 0.25);
 }
 
 .search .content {
@@ -74,7 +69,7 @@
 }
 
 .search-box input {
-  width: 100%;
+  width: calc(100% - 24px);
   height: 100%;
   outline: none;
   border: none;
@@ -82,15 +77,23 @@
   padding-left: 55px;
   background: #fff;
   border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.search-box input:focus {
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
 }
 
 .search-box input::placeholder {
   color: #929292;
+  transition: color 0.3s ease;
 }
 
 .search-box input:focus::placeholder {
   color: #bfbfbf;
 }
+
 
 .gallery {
   display: flex;
